@@ -4,7 +4,7 @@ import React from 'react';
 const WatchlistScreen = () => {
   return (
     <View>
-      <Text>Watchlist</Text>
+      <Text>Watch list</Text>
     </View>
   );
 };

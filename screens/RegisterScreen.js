@@ -47,12 +47,12 @@ const RegisterScreen = () => {
             <Text style={styles.title}>Stock Tracker</Text>
             <Text style={styles.headerText}>Please fill out all fields below</Text>
         </View>
-      
+
         <View style={styles.inputsContainer}>
             <TextInput placeholder='First Name' value={firstName} onChangeText={f => setFirstName(f)} style={styles.input} />
             <TextInput placeholder='Last Name' value={lastName} onChangeText={l => setLastName(l)} style={styles.input} />
             <TextInput placeholder='Age' value={age} onChangeText={a => setAge(a)} style={styles.input} />
-            <TextInput placeholder='Email' value={email} onChangeText={e => setEmail(e)} style={styles.input} />
+            <TextInput placeholder='Email Address' value={email} onChangeText={e => setEmail(e)} style={styles.input} />
             <TextInput placeholder='Password' value={password} onChangeText={p => setPassword(p)} style={styles.input} secureTextEntry/>
 
         </View>
@@ -153,5 +153,5 @@ const styles = StyleSheet.create({
         color: 'white',
 
     },
-    
+
 });

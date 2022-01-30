@@ -17,7 +17,7 @@ export default function HomeScreen (props) {
 
     const getMarketOpen = async () => {
         var query = 'https://api.polygon.io/v1/marketstatus/now?apiKey=EepXZYpz1RiHneHcnRHQupa8To6g53Dv'
-        
+
         var data;
 
         try {
@@ -33,7 +33,7 @@ export default function HomeScreen (props) {
         } catch (error) {
             alert(error)
         }
-        
+
 
         /*
         const data = axios.get(
@@ -46,14 +46,14 @@ export default function HomeScreen (props) {
         );
 
         */
-        
-        
+
+
     }
 
     useEffect(() => {
 
         getMarketOpen();
-            
+
     }, []);
 
     const nav = useNavigation();
@@ -61,7 +61,7 @@ export default function HomeScreen (props) {
 
 
 
-       
+
     }
     const handleLogOut = () => {
         auth
@@ -72,22 +72,22 @@ export default function HomeScreen (props) {
             .catch(error => {
                 alert(error);
             })
-            
-    }   
 
-    
+    }
+
+
   return (
     <KeyboardAvoidingView style={[styles.container, marketOpen? styles.openMarket : styles.closedMarket]} behavior='padding'>
         <View style={styles.header}>
             <Text style={[styles.headerText, marketOpen? styles.headerText : styles.darkModeText]}> Welcome, {auth.currentUser?.email}!</Text>
             {marketOpen? <Text style={[styles.headerText, marketOpen? styles.headerText : styles.darkModeText]}>The market is open!</Text> : <Text style={[styles.headerText, marketOpen? styles.headerText : styles.darkModeText]}>The market is closed!</Text>}
         </View>
-      
+
 
       <View style={styles.buttonContainer}>
         <Text style={[styles.text, marketOpen? styles.text : styles.darkModeText]}>Please enter a stock ticker you would like to view.</Text>
           <TextInput style={styles.input} placeholder='Ticker (Ex. AAPL)' />
-          
+
             <TouchableOpacity style={styles.button} onPress={handleViewData} >
                 <Text style={styles.buttonText}>View Stock Data</Text>
             </TouchableOpacity>
@@ -170,5 +170,5 @@ const styles = StyleSheet.create({
         color: 'white',
 
     },
-    
+
 });
