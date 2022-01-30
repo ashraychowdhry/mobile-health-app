@@ -2,10 +2,15 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { auth } from '../firebase';
 import { useNavigation } from '@react-navigation/native';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import firebaseApp from '../firebase';
+
+
 
 const AuthScreen = () => {
+
+    const auth = getAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,28 +18,20 @@ const AuthScreen = () => {
     const nav = useNavigation();
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                nav.replace('Home');
+                nav.replace('Stock Tracker');
             }
         }); 
         return unsubscribe;
     }, []);
 
-    const handleRegister = () => {
-        auth
-            .createUserWithEmailAndPassword(email, password)
-            .then(() => {userCred => {
-                console.log('SUCCESS - Registered user ' + userCred.user);
-            }})
-            .catch(error => {
-                alert(error);
-            })
+    const handleGoToRegister = () => {
+        nav.replace('Register');
     }
 
     const handleLogin = () => {
-        auth
-            .signInWithEmailAndPassword(email, password)
+        signInWithEmailAndPassword(auth, email, password)
             .then(() => {res => {
                 console.log('SUCCESS - Logged in user ' + userCred.user);
             }})
@@ -46,6 +43,10 @@ const AuthScreen = () => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior='padding'>
+
+        <View>
+            <Text style={styles.title}>Stock Tracker</Text>
+        </View>
       
         <View style={styles.inputsContainer}>
             <TextInput placeholder='Email' value={email} onChangeText={e => setEmail(e)} style={styles.input} />
@@ -56,8 +57,10 @@ const AuthScreen = () => {
             <TouchableOpacity style={styles.button} onPress={handleLogin} >
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.outlinedButton]} onPress={handleRegister} >
-                <Text style={styles.buttonOutlinedText}>Register</Text>
+        </View>
+        <View style={styles.outlinedButtonContainer}>
+            <TouchableOpacity style={[styles.button, styles.outlinedButton]} onPress={handleGoToRegister} >
+                <Text style={styles.buttonOutlinedText}>Not Registered? Make an Account Now</Text>
             </TouchableOpacity>
         </View>
     </KeyboardAvoidingView>
@@ -77,12 +80,23 @@ const styles = StyleSheet.create({
     inputsContainer: {
         width: '80%',
     },
+    title: {
+        fontSize: 40,
+        padding: 20,
+        paddingBottom: 140,
+        marginTop: 10,
+        textAlign: 'center',
+        color: 'tomato',
+    },
     input: {
         backgroundColor: 'white',
         paddingHorizontal: 15,
         paddingVertical: 10,
         borderRadius: 10,
         marginBottom: 10,
+        borderColor: 'tomato',
+        borderWidth: 1,
+
     },
     buttonContainer: {
         width: '60%',
@@ -93,10 +107,11 @@ const styles = StyleSheet.create({
 
     },
     button: {
-        backgroundColor: '#228CDB',
+        backgroundColor: 'tomato',
         width: '100%',
         padding: 15,
         borderRadius: 10,
+        alignItems: 'center',
     },
     buttonText: {
         color: 'white',
@@ -106,14 +121,20 @@ const styles = StyleSheet.create({
     },
     outlinedButton: {
         backgroundColor: 'white',
-        borderColor: '#228CDB',
+        borderColor: 'tomato',
         borderWidth: 1,
         marginTop: 5,
     },
     buttonOutlinedText: {
-        color: '#228CDB',
-        fontSize: 18,
+        color: 'tomato',
+        fontSize: 14,
         fontWeight: '700',
     },
+    outlinedButtonContainer: {
+        width: '80%',
+        marginTop: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
     
 });

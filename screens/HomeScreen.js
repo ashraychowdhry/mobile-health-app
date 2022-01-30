@@ -5,8 +5,11 @@ import { TextInput } from 'react-native-gesture-handler';
 import { auth } from '../firebase';
 import axios from 'axios';
 import { KeyboardAvoidingView } from 'react-native';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function HomeScreen (props) {
+
+    const auth = getAuth();
 
     const [ticker, setTicker] = useState('');
     const [marketOpen, setMarketOpen] = useState(null);
@@ -77,7 +80,7 @@ export default function HomeScreen (props) {
     <KeyboardAvoidingView style={[styles.container, marketOpen? styles.openMarket : styles.closedMarket]} behavior='padding'>
         <View style={styles.header}>
             <Text style={[styles.headerText, marketOpen? styles.headerText : styles.darkModeText]}> Welcome, {auth.currentUser?.email}!</Text>
-            {marketOpen? <Text style={[styles.headerText, marketOpen? styles.headerText : styles.darkModeText]}> The market is open!</Text> : <Text style={[styles.headerText, marketOpen? styles.headerText : styles.darkModeText]}> The market is closed!</Text>}
+            {marketOpen? <Text style={[styles.headerText, marketOpen? styles.headerText : styles.darkModeText]}>The market is open!</Text> : <Text style={[styles.headerText, marketOpen? styles.headerText : styles.darkModeText]}>The market is closed!</Text>}
         </View>
       
 
@@ -133,14 +136,14 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         width: '60%',
-        marginTop: 40,
+        marginTop: 10,
         alignItems: 'center',
         justifyContent: 'center',
 
 
     },
     button: {
-        backgroundColor: '#228CDB',
+        backgroundColor: 'tomato',
         width: '100%',
         padding: 15,
         borderRadius: 10,
@@ -154,12 +157,12 @@ const styles = StyleSheet.create({
     },
     outlinedButton: {
         backgroundColor: 'white',
-        borderColor: '#228CDB',
+        borderColor: 'tomato',
         borderWidth: 1,
         marginTop: 60,
     },
     buttonOutlinedText: {
-        color: '#228CDB',
+        color: 'tomato',
         fontSize: 18,
         fontWeight: '700',
     },

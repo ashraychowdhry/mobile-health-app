@@ -3,6 +3,10 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
+import { initializeApp } from 'firebase/app';
+import { getDatabase } from "firebase/database";
+import { getAuth } from "firebase/auth";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -11,6 +15,7 @@ import 'firebase/compat/auth';
 const firebaseConfig = {
   apiKey: "AIzaSyCFyzWbFIm26V_EvRIUQUJJ88y9hXB2000",
   authDomain: "mobile-stock-app.firebaseapp.com",
+  databaseURL: "https://mobile-stock-app-default-rtdb.firebaseio.com/",
   projectId: "mobile-stock-app",
   storageBucket: "mobile-stock-app.appspot.com",
   messagingSenderId: "373566762332",
@@ -18,6 +23,12 @@ const firebaseConfig = {
   measurementId: "G-PPBH04QT2H"
 };
 
+
+const firebaseApp = initializeApp(firebaseConfig);
+const database = getDatabase(firebaseApp);
+const auth = getAuth(firebaseApp);
+
+/*
 // Initialize Firebase
 let app;
 
@@ -29,4 +40,6 @@ if (firebase.apps.length === 0) {
 
 const auth = firebase.auth();
 
-export { auth };
+*/
+
+export { firebaseApp };

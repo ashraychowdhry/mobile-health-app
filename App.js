@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
 import AuthScreen from './screens/AuthScreen';
+import ScreensManager from './screens/ScreensManager';
+import RegisterScreen from './screens/RegisterScreen';
 
 const Stack = createStackNavigator();
 
@@ -14,13 +16,14 @@ export default function App() {
       <Stack.Navigator 
       screenOptions={{
           headerStyle: {
-            backgroundColor: '#228CDB'
+            backgroundColor: 'tomato'
           },
         	headerTintColor: '#fff'
       }} initialRouteName="Auth">
         
         <Stack.Screen name="Auth" options={{headerShown: false}} component={AuthScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Register" options={{headerShown: false}} component={RegisterScreen} />
+        <Stack.Screen name="Stock Tracker"  component={ScreensManager} />
       </Stack.Navigator>
     </NavigationContainer>
   );
