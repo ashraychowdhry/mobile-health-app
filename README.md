@@ -21,6 +21,3 @@ To run the application, simply clone the repository locally, and run npm install
 •	User watchlist data is collected in order to track how users use the application for stocks
 •	Bottom-tab navigation, advanced navigation for login systems, back functionality via stacks.
 •	Alerting feature upon login to make clear whether the financial market (US) is open or closed
-
-
-![image](https://user-images.githubusercontent.com/55169325/151875383-4254c1cd-326f-46c7-8180-1c83b6ac58ea.png)
