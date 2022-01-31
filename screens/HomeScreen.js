@@ -1,10 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { auth } from '../firebase';
 import axios from 'axios';
 import { KeyboardAvoidingView } from 'react-native';
+import { useToast } from 'react-native-fast-toast'
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function HomeScreen (props) {
@@ -13,6 +13,8 @@ export default function HomeScreen (props) {
 
     const [ticker, setTicker] = useState('');
     const [marketOpen, setMarketOpen] = useState(null);
+
+    const toast = useToast();
 
 
     const getMarketOpen = async () => {
@@ -23,7 +25,16 @@ export default function HomeScreen (props) {
         try {
             data = await axios.get(query)
             .then(response => {
-                alert('The market is ' + response.data.market);
+
+                toast.show('The market is ' + response.data.market, {
+                    type: 'success',
+                    position: 'top',
+                    duration: 10000,
+                    offset: 30,
+                    animationType: 'slide-in'
+              });
+                
+                //alert('The market is ' + response.data.market);
                 if (response.data.market == 'closed') {
                     setMarketOpen(false);
                 } else {
@@ -57,23 +68,36 @@ export default function HomeScreen (props) {
     }, []);
 
     const nav = useNavigation();
-    const handleViewData = () => {
+    const handleViewData = async () => {
 
 
+        //https://api.polygon.io/v1/meta/symbols/AAPL/company?apiKey=EepXZYpz1RiHneHcnRHQupa8To6g53Dv
 
+        var query = 'https://api.polygon.io/v1/meta/symbols/' + ticker + '/company?apiKey=EepXZYpz1RiHneHcnRHQupa8To6g53Dv'
+        //query = 'https://api.polygon.io/v1/meta/symbols/AAPL/company?apiKey=EepXZYpz1RiHneHcnRHQupa8To6g53Dv'
+        
+        var data;
+
+        try {
+            data = await axios.get(query)
+            .then(response => {
+                nav.navigate('Ticker', {
+                    logo: response.data.logo,
+                    symbol: response.data.symbol,
+                    name: response.data.name,
+                    sector: response.data.sector,
+                    ceo: response.data.ceo,
+                    employees: response.data.employees,
+                    description: response.data.description,
+                    marketcap: response.data.marketcap,
+                })
+            })
+        } catch (error) {
+            alert(error)
+        }
        
     }
-    const handleLogOut = () => {
-        auth
-            .signOut()
-            .then(() => {
-                nav.replace('Auth');
-            })
-            .catch(error => {
-                alert(error);
-            })
-            
-    }   
+       
 
     
   return (
@@ -86,14 +110,15 @@ export default function HomeScreen (props) {
 
       <View style={styles.buttonContainer}>
         <Text style={[styles.text, marketOpen? styles.text : styles.darkModeText]}>Please enter a stock ticker you would like to view.</Text>
-          <TextInput style={styles.input} placeholder='Ticker (Ex. AAPL)' />
+          <TextInput style={styles.input} value={ticker} onChangeText={t => setTicker(t)} placeholder='Ticker (Ex. AAPL)' />
           
             <TouchableOpacity style={styles.button} onPress={handleViewData} >
                 <Text style={styles.buttonText}>View Stock Data</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.outlinedButton]} onPress={handleLogOut} >
-                <Text style={styles.buttonOutlinedText}>Log Out</Text>
-            </TouchableOpacity>
+            
+        </View>
+        <View style={styles.emptySpacer}>
+            
         </View>
     </KeyboardAvoidingView>
   )
@@ -105,17 +130,19 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
+        justifyContent: 'flex-end',
     },
     openMarket: {
         backgroundColor: '#97ff94',
     },
+    
     closedMarket: {
         backgroundColor: '#1f1f1f',
     },
     headerText: {
         fontSize: 25,
         padding: 20,
-        marginTop: 40,
+        marginTop: 20,
         textAlign: 'center',
     },
     text: {
@@ -133,6 +160,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 10,
         marginBottom: 10,
+        width: '100%',
     },
     buttonContainer: {
         width: '60%',
@@ -170,5 +198,8 @@ const styles = StyleSheet.create({
         color: 'white',
 
     },
+    emptySpacer: {
+        flex: 1,
+    }
     
 });

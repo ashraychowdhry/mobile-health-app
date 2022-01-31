@@ -4,10 +4,12 @@ import { TextInput } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAvoidingView } from 'react-native';
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { collection, addDoc, getFirestore, setDoc, doc } from "firebase/firestore"; 
 
 const RegisterScreen = () => {
 
     const auth = getAuth();
+    const database = getFirestore();
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -28,9 +30,23 @@ const RegisterScreen = () => {
 
     const handleRegister = () => {
         createUserWithEmailAndPassword(auth, email, password)
-            .then(() => {userCred => {
-                console.log('SUCCESS - Registered user ' + userCred.user);
-            }})
+
+            .then(() => {
+
+                const UserDataRef = collection(database, "UserData");
+                
+                setDoc(doc(UserDataRef, auth.currentUser.uid), {
+                    first: firstName,
+                    last: lastName,
+                    age: age,
+                })
+                .then(() => {
+                    console.log("User data added");
+                })
+                .catch (error => {
+                    alert(error);
+                });
+            })
             .catch(error => {
                 alert(error);
             })
@@ -63,6 +79,7 @@ const RegisterScreen = () => {
             <TouchableOpacity style={[styles.button, styles.outlinedButton]} onPress={handleBackToLogin} >
                 <Text style={styles.buttonOutlinedText}>Back to Login</Text>
             </TouchableOpacity>
+
         </View>
     </KeyboardAvoidingView>
   );

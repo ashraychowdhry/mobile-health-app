@@ -8,24 +8,30 @@ import AuthScreen from './screens/AuthScreen';
 import ScreensManager from './screens/ScreensManager';
 import RegisterScreen from './screens/RegisterScreen';
 
+import { ToastProvider } from 'react-native-fast-toast'
+import TickerInfoScreen from './screens/TickerInfoScreen';
+
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator 
-      screenOptions={{
-          headerStyle: {
-            backgroundColor: 'tomato'
-          },
-        	headerTintColor: '#fff'
-      }} initialRouteName="Auth">
-        
-        <Stack.Screen name="Auth" options={{headerShown: false}} component={AuthScreen} />
-        <Stack.Screen name="Register" options={{headerShown: false}} component={RegisterScreen} />
-        <Stack.Screen name="Stock Tracker"  component={ScreensManager} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ToastProvider>
+      <NavigationContainer>
+        <Stack.Navigator 
+        screenOptions={{
+            headerStyle: {
+              backgroundColor: 'tomato'
+            },
+            headerTintColor: '#fff'
+        }} initialRouteName="Auth">
+          
+          <Stack.Screen name="Auth" options={{headerShown: false}} component={AuthScreen} />
+          <Stack.Screen name="Register" options={{headerShown: false}} component={RegisterScreen} />
+          <Stack.Screen name="Ticker" component={TickerInfoScreen} />
+          <Stack.Screen name="Stock Tracker"  component={ScreensManager} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ToastProvider>
   );
 }
 
