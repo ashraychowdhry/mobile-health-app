@@ -42,7 +42,7 @@ export default function HomeScreen (props) {
                 }
             })
         } catch (error) {
-            alert(error)
+            //alert(error)
         }
         
 

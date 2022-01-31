@@ -41,7 +41,7 @@ const RegisterScreen = () => {
                     age: age,
                 })
                 .then(() => {
-                    const UserWatchlistRef = collection(database, "Watchlists");
+                    const UserWatchlistRef = collection(database, "UserWatchlist");
                 
                     setDoc(doc(UserWatchlistRef, auth.currentUser.uid), {
                         tickers: []

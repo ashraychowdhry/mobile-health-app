@@ -1,23 +1,92 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { ScrollView } from 'react-native-gesture-handler';
+import { TextInput } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { collection, addDoc, getFirestore, setDoc, doc, getDoc } from "firebase/firestore"; 
+import axios from 'axios';
 
 
 const NewsScreen = () => {
 
-    const getMarketNews = async () => {
-        var query = 'https://newsapi.org/v2/top-headlines?country=us&apiKey=e9f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8'
+    const auth = getAuth();
+    const nav = useNavigation();
+    const database = getFirestore();
+
+    const [tickers, setTickers] = useState([]);
+    const [news, setNews] = useState([]);
+
+    const getUserWatchlist = async () => {
+
+        const ref = collection(database, "UserWatchlist");
+        const docRef = doc(ref, auth.currentUser.uid);
+            getDoc(docRef)
+                .then(doc => {
+
+                    setTickers(doc.data().tickers);
+                    //alert(doc.data().tickers);
+                })
+                .catch(error => {
+                    alert(error);
+                })
+
+    }
+
+    const getNews = async (ticker) => {
+            
+        //alert(ticker);
+        var query = 'https://api.polygon.io/v2/reference/news?ticker=' + ticker + '&order=asc&limit=1&apiKey=EepXZYpz1RiHneHcnRHQupa8To6g53Dv'
+        
         var data;
+
+        try {
+            data = await axios.get(query)
+            .then(response => {
+
+                
+                //alert(response.data.results[0].headline);
+                setNews(news.concat(response.data.results[0]))
+            })
+        } catch (error) {
+            //alert(error)
+        }
+    
+    }
+
+    const compileNews = async () => {
+
+        getUserWatchlist()
+        .then(() => {
+            for (let i = 0; i < 3; i++) {
+                if (tickers[i]) {
+                    getNews(tickers[i]);
+                }
+            }
+        })
+        .catch(error => {
+            alert(error);
+        })
+
     }
     
     useEffect(() => {
-        getMarketNews();
+        setNews([]);
+        compileNews();
     }, []);
 
-    
+     
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>News</Text>
-    </View>
+        <View style={styles.container}>
+        <Text style={styles.title}>News</Text>
+            {news.map(news => {
+                return (
+                    <View>
+                        <Text style={styles.text} >{news.title}</Text>
+                    </View>
+                )
+            })}
+        </View>
   );
 };
 
@@ -30,6 +99,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#1f1f1f',
         alignItems: 'center',
         justifyContent: 'center',
+        height: '100%'
     },
     openMarket: {
         backgroundColor: '#97ff94',
