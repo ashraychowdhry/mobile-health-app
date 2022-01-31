@@ -9,15 +9,27 @@ Application Demo Video: https://youtu.be/dCbYHdNwcOM
 To run the application, simply clone the repository locally, and run npm install (requires node package manager). This will install the libraries in node_modules locally, and then run npm start upon completion. This will provide you a QR code in the terminal, which you can scan on the Expo Go application on your iPhone, or instead follow the terminal directions to open an emulator in browser. The technologies used in this application were React Native (Frontend), and Firebase (backend/database). The full feature list includes:
 
 •	User registration
+
 •	User additional profile information creation, storage, and retrieval
+
 •	User secured login with input validation
+
 •	Background color change with stock market status
+
 •	Stock company ticker search and general information retrieval, via a third-party API
+
 •	Toast notifications that are local to the platform run on, as well as cross-platform compatible
+
 •	Personalized company news retrieval from third party API (as seen in demo video based on user watchlist)
+
 •	Profile information displaying from database
+
 •	Logout functionality
+
 •	Watchlist database storage and adding to list feature
+
 •	User watchlist data is collected in order to track how users use the application for stocks
+
 •	Bottom-tab navigation, advanced navigation for login systems, back functionality via stacks.
+
 •	Alerting feature upon login to make clear whether the financial market (US) is open or closed
