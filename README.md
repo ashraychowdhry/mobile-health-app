@@ -1,4 +1,4 @@
-# mobile-health-app
+# Mobile Stock Tracker Application - Get personalized news notifications, general information about any US company, and build your watchlist
 
 Made with React Native and Firebase
 
