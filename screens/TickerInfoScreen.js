@@ -11,7 +11,7 @@ const TickerInfoScreen = ({route}) => {
         <Text style={styles.text}>CEO: {route.params.ceo}</Text>
         <Text style={styles.text}>Number of Employees: {route.params.employees}</Text>
         <Text style={styles.text}>Description: {route.params.description}</Text>
-        <Text style={styles.text}>Market Capitalization: {route.params.marketcap}</Text>
+        <Text style={styles.text}>Market Capitalization: ${route.params.marketcap}</Text>
     </View>
   );
 

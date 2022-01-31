@@ -54,7 +54,7 @@ const ProfileScreen = () => {
   return (
 
     <View style={styles.container}>
-        <Text style={styles.title}>Profile</Text>
+        <Text style={styles.title}>Profile Page</Text>
             <View style={styles.infoContainer}>
                 <Text style={styles.infoText}>Name: {firstName + ' ' + lastName}</Text>
                 <Text style={styles.infoText}>Age: {age}</Text>
